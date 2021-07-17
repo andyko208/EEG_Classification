@@ -1,0 +1,8 @@
+subjecta-neutral-1: turn left (5s) (1)
+subjecta-neutral-2: mouse movement to turn left (5s) (2)
+subjecta-relaxed-1: turn right (5s) (1)
+subjecta-relaxed-2: mouse movement to turn right (5s) (2)
+
+neutral - left
+relaxed - right
+

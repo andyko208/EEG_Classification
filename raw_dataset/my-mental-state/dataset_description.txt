@@ -1,0 +1,10 @@
+Collected on 7/11
+
+1. neutral(60s) - put the participant in a comfortable position while looking at the minecraft screen. 
+2. relaxed(60s) - put the participantin a comfortable position while listening to low tempo music, looking at the minecraft screen
+                  music - https://www.youtube.com/watch?v=8IKqmLG7v1w
+                  
+3. Concentrating(60s) - Play tricky cups https://www.improvememory.org/wp-content/games/trickycups_e_fullscreen.htm
+
+- Record each state for 60 seconds each. 
+  command in terminal: muselsl record --duration 60 (takes 3~5 seconds to actually start recording after the command)

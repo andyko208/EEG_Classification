@@ -1,0 +1,16 @@
+mental-state-1246: feature extraction performed from 
+given jordan's original dataset (1246)
+
+mental-state-989: jordan's feature extraction (989)
+
+mental-state-test: my testing datasets (minecraft challenges..)
+
+my-mental-state: collected 3 states with 2 trials each
+
+second_trials.csv: from my-mental-state, 2nd trials only
+
+ultimate-mental-state.csv: original_data + 1st trials from my-mental-state
+
+left-right-commands: 30s each of voice(1) and mouse(2)
+
+left-right-commands-test: 5s each of voice(1) and mouse(2)
