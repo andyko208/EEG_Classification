@@ -1,3 +1,6 @@
+*Bluemuse gets 989 columns, while uvicmuse gets 1246.
+*Bluemuse doesn't need to reconvert the time by dividing the original time by 1 mil
+
 mental-state-1246: feature extraction performed from 
 given jordan's original dataset (1246)
 
@@ -14,3 +17,7 @@ ultimate-mental-state.csv: original_data + 1st trials from my-mental-state
 left-right-commands: 30s each of voice(1) and mouse(2)
 
 left-right-commands-test: 5s each of voice(1) and mouse(2)
+
+minecraft-state: 60s of 3 different tasks: mining, building, wandering from Mike, Jeremy, and me
+
+my-minecraft-state: my second trial of 3 tasks includes more complicated tasks

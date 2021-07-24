@@ -53,11 +53,11 @@ def gen_training_matrix(directory_path, output_file, cols_to_ignore):
         except:
             print ('Wrong file name', x)
             sys.exit(-1)
-        if state.lower() == 'concentrating' and 'building':
+        if state.lower() == 'concentrating' or state.lower() == 'building':
             state = 2.
-        elif state.lower() == 'neutral' and 'mining':
+        elif state.lower() == 'neutral' or state.lower() == 'mining':
             state = 1.
-        elif state.lower() == 'relaxed' and 'wandering':
+        elif state.lower() == 'relaxed' or state.lower() == 'wandering':
             state = 0.
         else:
             print ('Wrong file name', x)
