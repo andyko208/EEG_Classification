@@ -4,50 +4,53 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import os
 import random
+import joblib
 
+from xgboost import XGBClassifier
+from time import time, sleep, strftime, gmtime
 from sklearn.model_selection import train_test_split
-from muselsl import stream, list_muses
+from muselsl import stream, list_muses, record
 from pylsl import StreamInlet, resolve_byprop  # Module to receive EEG data
-import utils  # Our own utility functions
+from EEG_generate_training_matrix_realtime import gen_training_matrix
 
-""" EXPERIMENTAL PARAMETERS """
-# Modify these to change aspects of the signal processing
-
-# Length of the EEG data buffer (in seconds)
-# This buffer will hold last n seconds of data and be used for calculations
-BUFFER_LENGTH = 5
-
-# Length of the epochs used to compute the FFT (in seconds)
-EPOCH_LENGTH = 1
-
-# Amount of overlap between two consecutive epochs (in seconds)
-OVERLAP_LENGTH = 0.8
-
-# Amount to 'shift' the start of each next consecutive epoch
-SHIFT_LENGTH = EPOCH_LENGTH - OVERLAP_LENGTH
-
-# Index of the channel(s) (electrodes) to be used
-# 0 = left ear, 1 = left forehead, 2 = right forehead, 3 = right ear
-INDEX_CHANNEL = [0]
-
+""" Real-time Minecraft State Classification """
 if __name__ == "__main__":
 
-    """ 1. CONNECT TO EEG STREAM """
+    # eeg_samples = []
+    # timestamps = []
 
-    # Search for active LSL streams
-    print('Looking for an EEG stream...')
+    # def save_eeg(new_samples, new_timestamps):
+    #     eeg_samples.append(new_samples)
+    #     timestamps.append(new_timestamps)
+
+    # muse = Muse(address, save_eeg, backend=backend)
+    # muse.connect()
+    # muse.start()
+
+    
+    """ Obtain the real-time signal values """
+    
+    muses = list_muses()
+
     streams = resolve_byprop('type', 'EEG', timeout=2)
+    chunk_length = 12
     if len(streams) == 0:
         raise RuntimeError('Can\'t find EEG stream.')
 
-    # Set active EEG stream to inlet and apply time correction
-    print("Start acquiring data")
-    inlet = StreamInlet(streams[0], max_chunklen=12)
+    print("Started acquiring data.")
+    inlet = StreamInlet(streams[0], max_chunklen=chunk_length)
     eeg_time_correction = inlet.time_correction()
 
-    # Get the stream info and description
     info = inlet.info()
     description = info.desc()
+
+    Nchan = info.channel_count()
+
+    ch = description.child('channels').first_child()
+    ch_names = [ch.child_value('label')]
+    for i in range(1, Nchan):
+        ch = ch.next_sibling()
+        ch_names.append(ch.child_value('label'))
 
     # Get the sampling frequency
     # This is an important value that represents how many EEG data points are
@@ -55,87 +58,71 @@ if __name__ == "__main__":
     # for the Muse 2016, this should always be 256
     fs = int(info.nominal_srate())
 
-    """ 2. INITIALIZE BUFFERS """
+    """ Set it to 5 seconds for testing currently """
+    duration = 5
+    eeg_samples = []
+    timestamps = []
+    t_init = time()
+    time_correction = inlet.time_correction()
+    last_written_timestamp = None
+    print('Start recording at time t=%.3f' % t_init)
+    # print('Time correction: ', time_correction)
 
-    # Initialize raw EEG data buffer
-    eeg_buffer = np.zeros((int(fs * BUFFER_LENGTH), 1))
-    filter_state = None  # for use with the notch filter
+    """ Change this while loop to true """
+    while (time() - t_init) < duration:
+        try:
+            data, timestamp = inlet.pull_chunk(
+                timeout=1.0, max_samples=chunk_length)
 
-    # Compute the number of epochs in "buffer_length"
-    n_win_test = int(np.floor((BUFFER_LENGTH - EPOCH_LENGTH) /
-                              SHIFT_LENGTH + 1))
+            if timestamp:
+                eeg_samples.append(data)
+                timestamps.extend(timestamp)
+                tr = time()
+            
+        except KeyboardInterrupt:
+            break
+    
+    eeg_samples = np.concatenate(eeg_samples, axis=0)
+    timestamps = np.array(timestamps) + time_correction
 
-    # Initialize the band power buffer (for plotting)
-    # bands will be ordered: [delta, theta, alpha, beta]
-    band_buffer = np.zeros((n_win_test, 4))
+    eeg_samples = np.c_[timestamps, eeg_samples]
+    data = pd.DataFrame(data=eeg_samples, columns=["timestamps"] + ch_names)
+    np_data = np.array(data)
+    print('data{}: \n{}'.format(np_data.shape, np_data))
+    matrix = gen_training_matrix(np_data, [])
+    print('matrix generated!')
+    print('matrix{}:\n{}'.format(matrix.shape, matrix))
 
-""" 3. GET DATA """
-
-# The try/except structure allows to quit the while loop by aborting the
-# script with <Ctrl-C>
-print('Press Ctrl-C in the console to break the while loop.')
-
-try:
-    # The following loop acquires data, computes band powers, and calculates neurofeedback metrics based on those band powers
-    while True:
-
-        """ 3.1 ACQUIRE DATA """
-        # Obtain EEG data from the LSL stream
-        eeg_data, timestamp = inlet.pull_chunk(
-            timeout=1, max_samples=int(SHIFT_LENGTH * fs))
-
-        # print('eeg_data: \n')
-        # print('Shape: {}'.format(np.array(eeg_data).shape))
-        # print(eeg_data)
-
-
-        # Only keep the channel we're interested in
-        ch_data = np.array(eeg_data)[:, INDEX_CHANNEL]
-
-        # Update EEG buffer with the new data
-        eeg_buffer, filter_state = utils.update_buffer(
-            eeg_buffer, ch_data, notch=True,
-            filter_state=filter_state)
-
-        print('eeg_buffer:')
-        print('Shape: {}'.format(eeg_buffer.shape))
-        print(eeg_buffer)
-
-except KeyboardInterrupt:
-    print('Closing!')
+    # time_correction = inlet.time_correction()
+    # print("Time correction: ", time_correction)
 
 
 
+    """ Minecraft State Classification """
+    
+    """ 1. Load the pre-trained model """
+    # model = tf.keras.models.load_model(os.getcwd() + '/saved_models/minecraft-state-c-gru.h5')
+    model = joblib.load(open(os.getcwd() + '/saved_models/xgb.joblib', 'rb'))
 
+    """ 2. Make the raw prediction """
+    raw_pred = model.predict(matrix)
+    
+    print('raw_pred: ')
+    print(raw_pred)
 
+    """ 2. Interpret into readable result """
+    pred_arr = np.array(list(map(lambda x: np.argmax(x), raw_pred)))
 
+    print('pred_arr: ')
+    print(pred_arr)
 
-model = tf.keras.models.load_model(os.getcwd() + '/saved_models/1246_gru.h5')
+    counts = np.bincount(pred_arr)
+    state_num = np.argmax(counts)
 
-# model.summary()
-
-# 1246_gru: Test Accuracy: 50.714%
-# # 1246_gru_test: Test Accuracy: 91.429%
-outfile_path = os.getcwd() + '/final_dataset/mental-state-test.csv'
-mental_state_test = pd.read_csv(outfile_path)
-
-# 1246_gru: Test Accuracy: 92.742%
-# 1246_gru_test: Test Accuracy: 68.414%
-# outfile_path = os.getcwd() + '/final_dataset/mind_wandering.csv'
-# mind_wandering = pd.read_csv(outfile_path)
-
-def preprocess_inputs(df):
-    df = df.copy()
-
-    y = df['Label'].copy()
-    X = df.drop('Label', axis=1).copy()
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7, random_state=123)
-
-    return X_train, X_test, y_train, y_test
-
-
-X_train, X_test, y_train, y_test = preprocess_inputs(mental_state_test)
-
-model_acc = model.evaluate(X_test, y_test, verbose=0)[1]
-print("Test Accuracy: {:.3f}%".format(model_acc * 100))
+    if state_num == 2:
+        print('Building')
+    elif state_num == 1:
+        print('Mining')
+    elif state_num == 0:
+        print('Wandering')
+    
