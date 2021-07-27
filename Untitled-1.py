@@ -1,26 +1,32 @@
 import pyautogui
 import pydirectinput
-
+# import keyboard
 
 import random
 import time
-import pynput
+# import pynput
 import winsound
 # from pywinauto import keyboard
 
 duration = 1000  # milliseconds
 freq = 440  # Hz
-pydirectinput.moveTo(100, 150)
+
+# time.sleep(5)
+# pydirectinput.press('w')
+# # pyautogui.click()
+# time.sleep(0.5)
 # pydirectinput.click(button='right')
-pydirectinput.press('esc')
+# pydirectinput.moveTo(250, 350)
+# winsound.Beep(freq, duration)
 
 # mouse = pynput.mouse.Controller()
 
 # time.sleep(5)
+# print('The current pointer position is {0}'.format(mouse.position))
+# mouse.move(1036, 382)
 # winsound.Beep(freq, duration)
 
-# print('The current pointer position is {0}'.format(mouse.position))
-# mouse.move(226, 382)
+
 
 # winsound.Beep(freq, duration)
 
@@ -32,3 +38,4 @@ pydirectinput.press('esc')
 
 # time.sleep(5)
 # pyautogui.moveTo(226, 382, duration=1)
+# pyautogui.press('enter')
