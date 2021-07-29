@@ -101,8 +101,8 @@ if __name__ == "__main__":
     """ Minecraft State Classification """
     
     """ 1. Load the pre-trained model """
-    # model = tf.keras.models.load_model(os.getcwd() + '/saved_models/minecraft-state-c-gru.h5')
-    model = joblib.load(open(os.getcwd() + '/saved_models/xgb.joblib', 'rb'))
+    model = tf.keras.models.load_model(os.getcwd() + '/saved_models/minecraft-state-c-gru.h5')
+    # model = joblib.load(open(os.getcwd() + '/saved_models/xgb.joblib', 'rb'))
 
     """ 2. Make the raw prediction """
     raw_pred = model.predict(matrix)
