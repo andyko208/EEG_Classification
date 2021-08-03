@@ -6,6 +6,8 @@ import os
 import random
 import joblib
 
+import commands
+
 from xgboost import XGBClassifier
 from time import time, sleep, strftime, gmtime
 from sklearn.model_selection import train_test_split
@@ -59,7 +61,7 @@ if __name__ == "__main__":
     fs = int(info.nominal_srate())
 
     """ Set it to 5 seconds for testing currently """
-    duration = 5
+    duration = 10
     eeg_samples = []
     timestamps = []
     t_init = time()
@@ -101,14 +103,27 @@ if __name__ == "__main__":
     """ Minecraft State Classification """
     
     """ 1. Load the pre-trained model """
+    # model = tf.keras.models.load_model(os.getcwd() + '/saved_models/lstm_200.h5')
     model = tf.keras.models.load_model(os.getcwd() + '/saved_models/minecraft-state-c-gru.h5')
     # model = joblib.load(open(os.getcwd() + '/saved_models/xgb.joblib', 'rb'))
 
     """ 2. Make the raw prediction """
+    duration = 5
     raw_pred = model.predict(matrix)
-    
-    print('raw_pred: ')
+    print('raw_pred{}: '.format(raw_pred.shape))
     print(raw_pred)
+
+    """ 
+    1. Determine the confidence of prediction 
+    2. Determine if that confidence is continuing
+    3. Actual state 1 & 2 matches
+    """
+    # i_pred = int(np.argmax(raw_pred))
+    # print('i_pred: '.format(i_pred))
+    
+    # conf = raw_pred[i_pred]
+    # print('conf: {}'.format(conf))
+
 
     """ 2. Interpret into readable result """
     pred_arr = np.array(list(map(lambda x: np.argmax(x), raw_pred)))
@@ -121,8 +136,12 @@ if __name__ == "__main__":
 
     if state_num == 2:
         print('Building')
+        # commands.building()
     elif state_num == 1:
         print('Mining')
+        # commands.mining()
     elif state_num == 0:
         print('Wandering')
+        # commands.wandering()
+
     

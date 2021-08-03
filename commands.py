@@ -1,5 +1,5 @@
-import pyautogui
-import pyautogui
+import pydirectinput
+import pydirectinput
 
 import random
 import time
@@ -9,70 +9,84 @@ import sys
 """ Always centers cursor at x: 1280 y: 782"""
 
 def curr_cur():
-    print('Current cursor x: {} y: {}'.format(pyautogui.position()[0], pyautogui.position()[1]))
-    # print('Current cursor x: {} y: {}'.format(pyautogui.position()[0], pyautogui.position()[1]))
+    print('Current cursor x: {} y: {}'.format(pydirectinput.position()[0], pydirectinput.position()[1]))
+    # print('Current cursor x: {} y: {}'.format(pydirectinput.position()[0], pydirectinput.position()[1]))
 
-duration = 1000  # milliseconds
-freq = 440  # Hz
+def wandering(dur=5):
 
-x_size = int(pyautogui.size()[0])
-y_size = int(pyautogui.size()[1])
-print('Size of the window: {}'.format(pyautogui.size()))
-
-time.sleep(3)
-
-
-
-# print('Moving to x: {} y:{}'.format(x, y))
-
-# pyautogui.moveTo(x, y)
-curr_cur()
-winsound.Beep(freq, duration)
-
-def wandering():
-
-    
     moves = ('a', 'd', 'space')
     turns = (150, -150)
     t_init = time.time()
     dur = 10
     while (time.time() - t_init) < dur:
-        pyautogui.keyDown('w')
+        pydirectinput.keyDown('w')
         move_var = random.choice(moves)
-        x = int(pyautogui.position()[0])
-        y = int(pyautogui.position()[1])
+        x = int(pydirectinput.position()[0])
+        y = int(pydirectinput.position()[1])
         turn_var = int(random.choice(turns))
-        pyautogui.moveTo(x+turn_var, y)
-        pyautogui.press(move_var)
-        # curr_cur()
-        # if state != 'wandering':
-        #     break
-    pyautogui.keyUp('w')
+        pydirectinput.moveTo(x+turn_var, y)
+        pydirectinput.press(move_var)
 
-def mining():
-    t_init = time.time()
-    dur = 5
-    while (time.time() - t_init) < dur:
-        # pyautogui.
-        pyautogui.mouseDown(button='left')
-    # if state != 'mining':
-    #     break
-    pyautogui.mouseUp(button='left')
+    pydirectinput.keyUp('w')
+
+def mining(dur=5):
+
+    x = int(pydirectinput.position()[0])
+    # y = int(pydirectinput.position()[1])
+    y = int(pydirectinput.size()[1])
+
+    # tilt down to point direction towards ground
+    pydirectinput.moveTo(x, y)
+
+    # start mining
+    pydirectinput.mouseDown(button='left')
+    time.sleep(dur)
+    pydirectinput.mouseUp(button='left')
+
+def building(dur=5):
+    pydirectinput.keyDown('1')
+    pydirectinput.keyDown('s')
+    pydirectinput.mouseDown(button='right')
+    time.sleep(dur)
+    pydirectinput.keyUp('s')
+    pydirectinput.mouseUp(button='right')
+    
 
 if __name__ == "__main__":
+
+    
+    """ Alt-tab to switch to Minecraft tab after executing the program """
+    duration = 1000  # milliseconds
+    freq = 440  # Hz
+
+    # delay needed for switching tabs
+    time.sleep(2)
+    winsound.Beep(freq, duration)
+
+    x_size = int(pydirectinput.size()[0])
+    y_size = int(pydirectinput.size()[1])
+    print('Size of the window: {}'.format(pydirectinput.size()))
+    
+    x = int(pydirectinput.position()[0])
+    y = int(pydirectinput.position()[1])
+    curr_cur()
+
+    """ Run any functions to activate movements in Minecraft"""
+    
+    wandering()
     # mining()
-    # wandering()
-    x = int(pyautogui.position()[0])
-    # y = int(pyautogui.position()[1]+250)
-    y = int(y_size)
-    pyautogui.moveTo(x, y)
+    # building()
+
+    # Finished executing
+    winsound.Beep(freq, duration)
+
     
 
     """ real-time cursor coordinates"""
     # print('Press Ctrl-C to quit.')
     # try:
     #     while True:
-    #         x, y = pyautogui.position()
+    #         x, y = pydirectinput.position()
     #         positionStr = 'X: ' + str(x).rjust(4) + ' Y: ' + str(y).rjust(4)
     #         print(positionStr, end='')
     #         print('\b' * len(positionStr), end='', flush=True)
