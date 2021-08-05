@@ -1,0 +1,6 @@
+gru default: (256 units gru, 16 units dense)
+
+their-gru_dense_50: trained with subjecta and b (95.38%)
+gru_dense_100.h5: trained with updated version of my data and subjecta and b (89.05%)
+xgb.joblib: trained with minecraft-state-old (xgboost)
+minecraft-state-c-gru.h5: trained with minecraft-state-old (256 units gru only)

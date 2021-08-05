@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import os
 import random
 import joblib
+import time
+import winsound
 
 import commands
 
@@ -32,11 +34,12 @@ if __name__ == "__main__":
     
     """ Obtain the real-time signal values """
     
-    muses = list_muses()
+    
 
     streams = resolve_byprop('type', 'EEG', timeout=2)
     chunk_length = 12
     if len(streams) == 0:
+        muses = list_muses()
         raise RuntimeError('Can\'t find EEG stream.')
 
     print("Started acquiring data.")
@@ -61,7 +64,7 @@ if __name__ == "__main__":
     fs = int(info.nominal_srate())
 
     """ Set it to 5 seconds for testing currently """
-    duration = 10
+    duration = 5
     eeg_samples = []
     timestamps = []
     t_init = time()
@@ -103,8 +106,10 @@ if __name__ == "__main__":
     """ Minecraft State Classification """
     
     """ 1. Load the pre-trained model """
-    # model = tf.keras.models.load_model(os.getcwd() + '/saved_models/lstm_200.h5')
-    model = tf.keras.models.load_model(os.getcwd() + '/saved_models/minecraft-state-c-gru.h5')
+    model = tf.keras.models.load_model(os.getcwd() + '/saved_models/their-gru_dense_50.h5')
+    # model = tf.keras.models.load_model(os.getcwd() + '/saved_models/gru_dense_100.h5')
+    # model = tf.keras.models.load_model(os.getcwd() + '/saved_models/my-lstm_dense_50.h5')
+    # model = tf.keras.models.load_model(os.getcwd() + '/saved_models/minecraft-state-c-gru.h5')
     # model = joblib.load(open(os.getcwd() + '/saved_models/xgb.joblib', 'rb'))
 
     """ 2. Make the raw prediction """
@@ -131,6 +136,17 @@ if __name__ == "__main__":
     print('pred_arr: ')
     print(pred_arr)
 
+    confids = []
+    for i in range(raw_pred.shape[0]):
+        confids.append(raw_pred[i][pred_arr[i]])
+
+    print('confids: {}'.format(confids))
+    confid_states = []
+    for i in range(len(confids)):
+        if confids[i] >= 0.9:
+            confid_states.append(pred_arr[i])
+    print(confid_states)
+
     counts = np.bincount(pred_arr)
     state_num = np.argmax(counts)
 
@@ -143,5 +159,12 @@ if __name__ == "__main__":
     elif state_num == 0:
         print('Wandering')
         # commands.wandering()
+    else:
+        print('Stationary')
+
+    duration = 1000  # milliseconds
+    freq = 440  # Hz
+
+    winsound.Beep(freq, duration)
 
     

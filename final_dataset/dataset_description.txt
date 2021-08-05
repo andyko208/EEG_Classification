@@ -18,6 +18,10 @@ left-right-commands: 30s each of voice(1) and mouse(2)
 
 left-right-commands-test: 5s each of voice(1) and mouse(2)
 
-minecraft-state: 60s of 3 different tasks: mining, building, wandering from Mike, Jeremy, and me
+minecraft-state-old: 60s of 3 different tasks: mining, building, wandering from Mike, Jeremy, and me
 
-my-minecraft-state: my second trial of 3 tasks includes more complicated tasks
+minecraft-state: 8/4 minecraft-old + subjectc(me)-2 includes stabilized eeg data
+
+my-minecraft-state: subject c only
+
+their-minecraft-state: subject a and b only
