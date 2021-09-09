@@ -40,6 +40,7 @@ def matrix_from_csv_file(file_path):
 	
 	csv_data = np.genfromtxt(file_path, delimiter = ',')
 	full_matrix = csv_data[1:]
+# 	full_matrix = csv_data[1:int(csv_data.shape[0]/2) + 1]
 	#headers = csv_data[0] # Commented since not used or returned [fcampelo]
 	
 	return full_matrix

@@ -25,3 +25,7 @@ minecraft-state: 8/4 minecraft-old + subjectc(me)-2 includes stabilized eeg data
 my-minecraft-state: subject c only
 
 their-minecraft-state: subject a and b only
+
+their-minecraft-state-half: subject a and b only (first 30 sec)
+
+minecraft-state-final: earlier dataset + people from the lab

@@ -72,7 +72,7 @@ def gen_training_matrix(full_matrix, cols_to_ignore):
                                                             remove_redundant = True,
                                                             cols_to_ignore = cols_to_ignore)
     
-    print ('resulting vector shape for the file', vectors.shape)
+    # print ('resulting vector shape for the file', vectors.shape)
     
     
     if FINAL_MATRIX is None:
