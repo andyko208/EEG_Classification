@@ -24,3 +24,7 @@
 ## This work has applied approaches found here:
 - [Paper](https://www.researchgate.net/publication/328615252_A_Study_on_Mental_State_Classification_using_EEG-based_Brain-Machine_Interface)
 - [Github](https://github.com/jordan-bird/eeg-feature-generation)
+
+## Contact
+- Contact me for any questions regarding this work
+mailto:peanut61313@gmail.com
