@@ -26,5 +26,4 @@
 - [Github](https://github.com/jordan-bird/eeg-feature-generation)
 
 ## Contact
-- Contact me for any questions regarding this work
-mailto:peanut61313@gmail.com
+- Contact me for any questions regarding this work peanut61313@gmail.com
