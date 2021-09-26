@@ -1,0 +1,14 @@
+*Bluemuse gets 989 columns, while uvicmuse gets 1246.
+
+minecraft-state: 8/4 minecraft-old + subjectc(me)-2 includes stabilized eeg data (keep updating for better data)
+
+minecraft-state-final: earlier dataset + people from the lab (Jeremey's new collection)
+
+minecraft-state-old: 60s of 3 different tasks: mining, building, wandering from Mike(suba), Jeremy(subb), and me(subc)
+
+my-minecraft-state: subject c only
+
+their-minecraft-state: subject a and b only
+
+their-minecraft-state-half: subject a and b only (first 30 sec)
+

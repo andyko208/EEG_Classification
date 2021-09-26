@@ -1,0 +1,21 @@
+1. Wear the headset appropriately, refer to "muse_front.png", "muse_left.png", and "muse_right.png" for positions
+2. In terminal/powershell type "start bluemuse:" to turn BlueMuse GUI
+3. Find the Muse device and click "Start Streaming"
+4. In terminal/powershell type "muselsl view" to view the realtime raw signal values
+5. Adjust headset appropriately and wait until the plots look similar to "correct_setup.png"
+
+6. Type in erminal/powershell to start recording: $ muselsl record --duration 60
+
+- Task 1. Randomly moving or jumping around in any direction (60s)
+- Task 2. Simply mining with any tool user wants (60s)
+- Task 3. Continuously building blocks of user's choice, could be a simple N x N shape (60s)
+- Task 4. Stay calm and don't do anything
+
+7. Name each csv file in this format:
+*Person 1: subjecta, Person 2: subjectb, ...
+- Task 1. subjecta-wandering-1.csv
+- Task 2. subjecta-mining-1.csv
+- Task 3. subjecta-building-1.csv
+- Task 4. subjecta-stationary-1.csv
+
+

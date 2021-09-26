@@ -1,2 +1,0 @@
-8/3: first trials are normally done when stabilized
-8/4: includes second trials of which eeg data are stabilized (which the prediction always goes to mining)

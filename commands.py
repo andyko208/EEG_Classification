@@ -1,16 +1,13 @@
 import pydirectinput
-import pydirectinput
 
 import random
 import time
 import winsound
 import sys
 
-""" Always centers cursor at x: 1280 y: 782"""
 
 def curr_cur():
     print('Current cursor x: {} y: {}'.format(pydirectinput.position()[0], pydirectinput.position()[1]))
-    # print('Current cursor x: {} y: {}'.format(pydirectinput.position()[0], pydirectinput.position()[1]))
 
 def wandering(dur=5):
 
@@ -32,7 +29,6 @@ def wandering(dur=5):
 def mining(dur=5):
 
     x = int(pydirectinput.position()[0])
-    # y = int(pydirectinput.position()[1])
     y = int(pydirectinput.size()[1])
 
     # tilt down to point direction towards ground
@@ -50,10 +46,13 @@ def building(dur=5):
     time.sleep(dur)
     pydirectinput.keyUp('s')
     pydirectinput.mouseUp(button='right')
+
+def stationary(dur=5):
+    # Keeps at stationary position and don't do anything
+    time.sleep(dur)
     
 
-if __name__ == "__main__":
-
+def main():
     
     """ Alt-tab to switch to Minecraft tab after executing the program """
     duration = 1000  # milliseconds
@@ -73,16 +72,18 @@ if __name__ == "__main__":
 
     """ Run any functions to activate movements in Minecraft"""
     
-    wandering()
+    # wandering()
     # mining()
     # building()
+    # stationary
 
-    # Finished executing
+    # To determine if program finished executing
     winsound.Beep(freq, duration)
 
     
 
-    """ real-time cursor coordinates"""
+    """ real-time cursor coordinates """
+    # def coords():
     # print('Press Ctrl-C to quit.')
     # try:
     #     while True:
