@@ -22,8 +22,9 @@
 5. Complete four different tasks(states) in mind using imagination as such, use appropriate eye movements as such to help better the prediction results
 
 ## This work has applied approaches found here:
-- [Paper](https://www.researchgate.net/publication/328615252_A_Study_on_Mental_State_Classification_using_EEG-based_Brain-Machine_Interface)
+- [Paper1](https://www.researchgate.net/publication/328615252_A_Study_on_Mental_State_Classification_using_EEG-based_Brain-Machine_Interface)
+- [Paper2](https://link.springer.com/chapter/10.1007%2F978-3-030-29933-0_37)
 - [Github](https://github.com/jordan-bird/eeg-feature-generation)
 
 ## Questions?
-- Contact me for any questions regarding this work peanut61313@gmail.com
+- Contact me for any questions regarding this work - peanut61313@gmail.com
