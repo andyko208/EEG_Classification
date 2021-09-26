@@ -21,6 +21,6 @@
 4. Rerun the program to start the classification (may be helpful to open up another window and view the real-time signal value graphs with "muselsl view")
 5. Complete four different tasks(states) in mind using imagination as such, use appropriate eye movements as such to help better the prediction results
 
-## This work has used approaches found here:
+## This work has applied approaches found here:
 - [Paper](https://www.researchgate.net/publication/328615252_A_Study_on_Mental_State_Classification_using_EEG-based_Brain-Machine_Interface)
 - [Github](https://github.com/jordan-bird/eeg-feature-generation)
